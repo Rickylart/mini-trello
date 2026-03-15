@@ -5,6 +5,14 @@
             <div class="flex-1">
                 <flux:input wire:model="name" label="Task Name" placeholder="Enter task name" />
             </div>
+            <div class="w-64">
+                <flux:select wire:model="project_id" label="Project" placeholder="Select a project">
+                    <flux:select.option value="">Select a project</flux:select.option>
+                    @foreach ($projects as $project)
+                        <flux:select.option value="{{ $project->id }}">{{ $project->name }}</flux:select.option>
+                    @endforeach
+                </flux:select>
+            </div>
             @if ($editingId)
                 <flux:button type="submit" variant="primary">Update</flux:button>
                 <flux:button type="button" wire:click="cancelEdit" variant="ghost">Cancel</flux:button>
@@ -22,6 +30,7 @@
                     <th class="px-4 py-3 font-medium"></th>
                     <th class="px-4 py-3 font-medium">#</th>
                     <th class="px-4 py-3 font-medium">Name</th>
+                    <th class="px-4 py-3 font-medium">Project</th>
                     <th class="px-4 py-3 font-medium">Created</th>
                     <th class="px-4 py-3 font-medium">Actions</th>
                 </tr>
@@ -49,6 +58,7 @@
                         </td>
                         <td class="px-4 py-3 text-neutral-500">{{ $task->priority }}</td>
                         <td class="px-4 py-3">{{ $task->name }}</td>
+                        <td class="px-4 py-3 text-neutral-500">{{ $task->project?->name ?? '—' }}</td>
                         <td class="px-4 py-3 text-neutral-500">{{ $task->created_at->diffForHumans() }}</td>
                         <td class="px-4 py-3">
                             <div class="flex gap-2">
@@ -59,7 +69,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="px-4 py-3 text-center text-neutral-500">No tasks yet.</td>
+                        <td colspan="6" class="px-4 py-3 text-center text-neutral-500">No tasks yet.</td>
                     </tr>
                 @endforelse
             </tbody>
