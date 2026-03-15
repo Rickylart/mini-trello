@@ -1,17 +1,20 @@
 <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
-    {{-- Row 1: Form --}}
+    {{-- Header --}}
+    <div class="flex items-center justify-between">
+        <div>
+            <h2 class="text-lg font-semibold">{{ $project->name }}</h2>
+            @if ($project->description)
+                <p class="text-sm text-neutral-500">{{ $project->description }}</p>
+            @endif
+        </div>
+        <flux:button variant="ghost" href="{{ route('projects') }}" wire:navigate>← Back to Projects</flux:button>
+    </div>
+
+    {{-- Form --}}
     <div class="rounded-xl border border-neutral-200 p-6 dark:border-neutral-700">
         <form wire:submit="{{ $editingId ? 'update' : 'save' }}" class="flex items-end gap-4">
             <div class="flex-1">
                 <flux:input wire:model="name" label="Task Name" placeholder="Enter task name" />
-            </div>
-            <div class="w-64">
-                <flux:select wire:model="project_id" label="Project" placeholder="Select a project">
-                    <flux:select.option value="">Select a project</flux:select.option>
-                    @foreach ($projects as $project)
-                        <flux:select.option value="{{ $project->id }}">{{ $project->name }}</flux:select.option>
-                    @endforeach
-                </flux:select>
             </div>
             @if ($editingId)
                 <flux:button type="submit" variant="primary">Update</flux:button>
@@ -30,7 +33,6 @@
                     <th class="px-4 py-3 font-medium"></th>
                     <th class="px-4 py-3 font-medium">#</th>
                     <th class="px-4 py-3 font-medium">Name</th>
-                    <th class="px-4 py-3 font-medium">Project</th>
                     <th class="px-4 py-3 font-medium">Created</th>
                     <th class="px-4 py-3 font-medium">Actions</th>
                 </tr>
@@ -58,7 +60,6 @@
                         </td>
                         <td class="px-4 py-3 text-neutral-500">{{ $task->priority }}</td>
                         <td class="px-4 py-3">{{ $task->name }}</td>
-                        <td class="px-4 py-3 text-neutral-500">{{ $task->project?->name ?? '—' }}</td>
                         <td class="px-4 py-3 text-neutral-500">{{ $task->created_at->diffForHumans() }}</td>
                         <td class="px-4 py-3">
                             <div class="flex gap-2">
@@ -69,7 +70,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="px-4 py-3 text-center text-neutral-500">No tasks yet.</td>
+                        <td colspan="5" class="px-4 py-3 text-center text-neutral-500">No tasks yet.</td>
                     </tr>
                 @endforelse
             </tbody>

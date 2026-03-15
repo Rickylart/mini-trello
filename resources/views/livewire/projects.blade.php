@@ -42,6 +42,7 @@
                         <td class="px-4 py-3 text-neutral-500">{{ $project->created_at->diffForHumans() }}</td>
                         <td class="px-4 py-3">
                             <div class="flex gap-2">
+                                <flux:button size="sm" variant="primary" href="{{ route('projects.tasks', $project) }}" wire:navigate>Tasks</flux:button>
                                 <flux:button size="sm" variant="ghost" wire:click="edit({{ $project->id }})">Edit</flux:button>
                                 <flux:button size="sm" variant="danger" wire:click="delete({{ $project->id }})" wire:confirm="Are you sure you want to delete this project?">Delete</flux:button>
                             </div>
